@@ -1,0 +1,5 @@
+{
+    "ansible.python.interpreterPath": "/usr/bin/python3",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true
+}
