@@ -21,7 +21,7 @@ The playbooks make use of env vars for sensitive information.
 
 ### Inventory
 
-You will need to edit this file in order for Ansible to discover the nodes.
+You will need to edit the [hosts](./ansible/inventory/hosts.ini) (`ansible/inventory/hosts.ini`) file in order for Ansible to discover the nodes.
 
 ```ini
 [control]
