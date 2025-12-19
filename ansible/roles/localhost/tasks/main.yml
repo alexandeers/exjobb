@@ -1,0 +1,6 @@
+- name: Revert VMs in host
+  ansible.builtin.command:
+    cmd: virsh snapshot-revert '{{ item }}' original
+  become: true
+  changed_when: true
+  loop: "{{ reset_vm_list }}"

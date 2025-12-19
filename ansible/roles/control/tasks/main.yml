@@ -1,0 +1,35 @@
+- name: Initialize the control plane
+  ansible.builtin.command:
+    cmd: kubeadm init --pod-network-cidr=172.16.0.0/16 --cri-socket=unix:///run/containerd/containerd.sock
+  args:
+    creates: /etc/kubernetes/admin.conf
+  become: true
+
+- name: Create $HOME/.kube
+  ansible.builtin.file:
+    path: /home/ubuntu/.kube
+    state: directory
+    mode: "755"
+
+- name: Copy default Kubernetes config to $HOME
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/ubuntu/.kube/config
+    mode: "755"
+  become: true
+
+- name: Deploy Calico pod network to the cluster
+  ansible.builtin.command:
+    cmd: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+  become: true
+  changed_when: false
+
+- name: Get join token command
+  ansible.builtin.command:
+    cmd: kubeadm token create --print-join-command
+  register: control_kubeadm_token_output
+  changed_when: false
+
+- name: Publish join command
+  ansible.builtin.set_fact:
+    control_join_command: "{{ control_kubeadm_token_output.stdout }}"

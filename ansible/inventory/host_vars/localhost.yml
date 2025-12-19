@@ -1,0 +1,8 @@
+# These VMs are reset to their 'original' snapshot before bootstrapping the environment.
+# Make sure they have a snapshot called 'original'.
+reset_vm_list:
+  - k8s-control-1
+  - k8s-worker-1
+
+ansible_user: "{{ lookup('env', 'HOST_ANSIBLE_USER') }}"
+ansible_become_password: "{{ lookup('env', 'HOST_ANSIBLE_BECOME_PASS') }}"

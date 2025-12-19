@@ -1,0 +1,5 @@
+- name: Apply role to localhost
+  hosts: localhost
+  become: true
+  roles:
+    - localhost
