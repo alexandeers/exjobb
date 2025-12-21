@@ -15,21 +15,23 @@
   ansible.builtin.copy:
     src: /etc/kubernetes/admin.conf
     dest: /home/ubuntu/.kube/config
-    mode: "755"
+    mode: "0644"
+    remote_src: true
   become: true
 
 - name: Deploy Calico pod network to the cluster
   ansible.builtin.command:
     cmd: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
   become: true
-  changed_when: false
+  become_user: ubuntu
+  changed_when: true
 
 - name: Get join token command
   ansible.builtin.command:
     cmd: kubeadm token create --print-join-command
-  register: control_kubeadm_token_output
-  changed_when: false
+  register: control_plane_kubeadm_token_output
+  changed_when: true
 
 - name: Publish join command
   ansible.builtin.set_fact:
-    control_join_command: "{{ control_kubeadm_token_output.stdout }}"
+    control_plane_join_command: "{{ control_plane_kubeadm_token_output.stdout }}"

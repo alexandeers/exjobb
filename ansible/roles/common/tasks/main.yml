@@ -15,19 +15,19 @@
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '755'
+    mode: "755"
 
 - name: Create temp directory
   ansible.builtin.file:
     path: /tmp/exjobb
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Download Kubernetes apt key
   ansible.builtin.get_url:
-    url: 'https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key'
+    url: "https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key"
     dest: /tmp/exjobb/kubernetes_apt_key.key
-    mode: '644'
+    mode: "644"
 
 - name: Convert key to a compatible format
   ansible.builtin.command:
@@ -67,7 +67,7 @@
 - name: Generate containerd config
   ansible.builtin.command: containerd config default
   register: common_containerd_default_config
-  changed_when: false
+  changed_when: true
   failed_when: false
 
 - name: Configure containerd
@@ -94,7 +94,7 @@
 
 - name: Hold Kubernetes packages
   ansible.builtin.dpkg_selections:
-    name: '{{ item }}'
+    name: "{{ item }}"
     selection: hold
   loop:
     - kubelet
@@ -104,7 +104,7 @@
 - name: Disable swap
   ansible.builtin.command:
     cmd: swapoff -a
-  changed_when: false
+  changed_when: true
 
 - name: Remove swap from fstab
   ansible.posix.mount:

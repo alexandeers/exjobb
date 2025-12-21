@@ -1,6 +1,10 @@
-- name: Revert VMs in host
+- name: Revert virtual machines to original
   ansible.builtin.command:
-    cmd: virsh snapshot-revert '{{ item }}' original
+    cmd: virsh snapshot-revert 'k8s-worker-{{ item }}' original
   become: true
   changed_when: true
-  loop: "{{ reset_vm_list }}"
+  loop: "{{ localhost_workers }}"
+
+- name: Wait for VMs to restart
+  ansible.builtin.pause:
+    seconds: 5

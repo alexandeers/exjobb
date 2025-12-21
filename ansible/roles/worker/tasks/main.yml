@@ -1,0 +1,4 @@
+- name: Join cluster
+  ansible.builtin.command:
+    cmd: "{{ hostvars[groups['control_plane'][0]]['control_plane_join_command'] }}"
+  changed_when: true

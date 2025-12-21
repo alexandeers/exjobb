@@ -3,3 +3,21 @@
   become: true
   roles:
     - localhost
+
+- name: Apply common role
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Apply role to control planes
+  hosts: control_plane
+  become: true
+  roles:
+    - control_plane
+
+- name: Apply role to workers
+  hosts: workers
+  become: true
+  roles:
+    - worker
